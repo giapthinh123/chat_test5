@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js"></script>
+  <script src="jquery.js"></script>
+</head>
+<body>
+  
+  <div class="khung">
+    <ul id="chat">
+    </ul>
+    <form id="form" action="" >
+      <input id="box_chat" autocomplete="off">
+      <button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var chat = document.getElementById('chat');
+      var form = document.getElementById('form');
+      var box_chat = document.getElementById('box_chat');
+    
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (box_chat.value) {
+          socket.emit('chat message', box_chat.value);
+          document.getElementById('box_chat').value = null;
+        }
+      });
+      socket.on('chat message', function(msg) {
+        var item = document.createElement('p');
+        item.textContent = msg;
+        chat.appendChild(item);
+      });
+    </script>
+  </div>
+</body>
+</html>
